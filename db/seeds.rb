@@ -13,11 +13,24 @@ PrivateMessage.destroy_all
 Tag.destroy_all
 
 require 'faker'
-5.times do |f|
-    users = User.create!(first_name: Faker::Name.first_name, last_name: Faker::Name.last_name, description: Faker::Games::Pokemon.name, age: Faker::Number.non_zero_digit, email: Faker::Internet.email)
+
+
+10.times do |f|
     cities = City.create!(name: Faker::Address.city, zip_code: Faker::Address.zip_code)
-    gossips = Gossip.create!(title: Faker::Restaurant.name, content: Faker::Restaurant.description)
-    #private_messages = PrivateMessage.create!(
-    tags = Tag.create!(name: Faker::Games::ElderScrolls.last_name)
-    #gossip_tag_links = GossipTagLink.create!(
+    tags = Tag.create!(title: Faker::Games::ElderScrolls.last_name)
+end
+
+
+10.times do |f|
+    
+    users = User.create!(first_name: Faker::Name.first_name, last_name: Faker::Name.last_name, description: Faker::Games::Pokemon.name, age: Faker::Number.non_zero_digit, email: Faker::Internet.email, city: City.find(f+1))
+    gossips = Gossip.create!(title: Faker::Restaurant.name, content: Faker::Restaurant.description, user: User.find(f+1))
+    gossips = Gossip.create!(title: Faker::Restaurant.name, content: Faker::Restaurant.description, user: User.find(f+1))
+    private_messages = PrivateMessage.create!(content: Faker::Books::CultureSeries.book, sender: User.find(f+1))
+    message_recipient_links = MessageRecipientLink.create!(private_message: PrivateMessage.find(f+1), recipient: User.find(f+1))
+    gossip_tag_links = GossipTagLink.create!(gossip: Gossip.find(f+1), tag: Tag.find(f+1))
+end
+
+10.times do |f|
+    gossip_tag_links = GossipTagLink.create!(gossip: Gossip.find(f+11), tag: Tag.find(f+1))
 end
